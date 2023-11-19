@@ -1,18 +1,18 @@
 import pandas as pd
 import numpy as np
 
-# Read data
-df_train = pd.read_csv('train.csv')
-df_holidays = pd.read_csv('holidays_events.csv')
-
 def concate_holidays(df_train, df_holidays):
     
     # 日期格式轉換
     df_train['date'] = pd.to_datetime(df_train['date']) 
     df_holidays['date'] = pd.to_datetime(df_holidays['date'])
-
+    
     # 檢查是否有NA值
     df_holidays.isna().sum()
+    
+    # merge df_holidays to df_train
+    # convert date column to datetime64[ns]
+    df_train = df_train.merge(df_holidays, how='left', on='date')
 
     # encode 
     df_train = pd.get_dummies(df_train, columns=['family'], dummy_na=False, prefix='family')
